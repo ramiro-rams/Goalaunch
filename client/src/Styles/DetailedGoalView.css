@@ -1,0 +1,93 @@
+.detailedGoalView{
+    display: flex;
+    background-color: #1c3144;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 33.334vw;
+    height: 100%;
+    transition: width 0.5s ease;
+    z-index: -1;
+    overflow: auto;
+}
+
+.detailedGoalView > :not(.tabsBarr, .close-detailedView-button) {
+    margin-left: auto;
+    margin-right: auto;
+}
+.detailedGoalViewTitleButton{
+    color: white;
+    font-size: 30px;
+    background-color: #3f5364;
+    height: 60px;
+    width: 100%;
+    margin: 30px 0px 30px 0px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+}
+.tabsBarr{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.tabsBarr > button {
+    background-color: #3f5364;
+    width: 100%;
+    height: 50px;
+    color: white;
+    cursor: pointer;
+}
+.delete-goal-img{
+    width: 30px;
+}
+.save-goal-img{
+    width: 30px
+}
+.close-detailedView-button{
+    position: absolute;
+    align-self: flex-end;
+    background-color: #3f5364;
+    color: white;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
+#goalTitleForm{
+    display: flex;
+    margin: 30px 0px 30px 0px;
+}
+#goalTitleForm > input{
+    height: 60px;
+    font-size: 30px;
+    width: 80%;
+    background-color: #1c3144;
+    border: none;
+    color: white;
+    box-sizing: border-box;
+}
+#goalTitleForm > button{
+    width: 10%;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1150px){
+    .detailedGoalView{
+        left: 0%;
+        z-index: 1;
+        transform: translate(0%, -50%);
+        box-sizing :border-box;
+        width: 50%;
+    }
+}
+@media screen and (max-width: 620px){
+    .detailedGoalView{
+        width: 100%;
+    }
+}

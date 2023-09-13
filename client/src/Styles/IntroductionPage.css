@@ -1,0 +1,25 @@
+.introduction-container{
+    position: absolute;
+    color: white;
+    max-width: 500px;
+    width: 100%;
+    font-size: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.introduction-container > h1{
+    text-align: center;
+}
+ .introduction-container > span{
+    display: flex;
+    justify-content: center;
+ }
+
+.introduction-container > span > a{
+    color: white;
+}
+
+.wikipediaLink{
+    color: white;
+}

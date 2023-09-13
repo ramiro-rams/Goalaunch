@@ -1,0 +1,75 @@
+.registerPage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15vh;
+    color: white
+}
+
+.registerPage > div{
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 10px 0;
+}
+.registerPage > div > div{
+    align-self: center;
+    width: 90px;
+    height: 2px;
+    background-color: gray;
+}
+
+.registerPage > div > span{
+    margin: 0px 20px 0 20px;
+}
+
+.registerPage > a{
+    color: white;
+}
+.registerForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.registerInput{
+    max-width: 250px;
+    width: 250px;
+    height: 30px;
+    margin: 5px 0px 5px 0;
+}
+
+.registerInputContainer > button{
+    position: absolute;
+    top: 50%;
+    right: 7px;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.registerSubmitButton{
+    height: 25px;
+    max-width: 250px;
+    width: 100%;
+    margin-top: 10px;
+    cursor: pointer;
+    color: white;
+    background-color: #3f5364;
+}
+
+.registerInputContainer{
+    position: relative;
+    max-width: 258px;
+    width: 100%;
+}
+
+.registerErrorMessage{
+    color: #ff9595;
+    width: 250px;
+    text-align: center;
+}
+.passwordRequirements{
+    margin-top: 10px;
+    width: 300px;
+}

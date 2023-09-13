@@ -1,0 +1,22 @@
+.panelSelectionButtons{
+    display: none;
+}
+.tabSelected{
+    background-color: #3f5364;
+}
+.tabNotSelected{
+    background-color: #1c3144;
+}
+@media screen and (max-width: 620px){
+    .panelSelectionButtons{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    .panelSelectionButtons > button{
+        flex-grow: 1;
+        height: 50px;
+        color: white;
+    }
+    
+}

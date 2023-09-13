@@ -1,0 +1,175 @@
+.pomodoroTimer{
+    background-color: #1c3144;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 50%;
+    transition: left 0.5s ease, width 0.5s ease;
+    overflow-y: auto;
+    color: white;
+}
+
+.pomodoroTimer.right{
+    left: 66.667%;
+    width: calc(33.333%);
+}
+.timeIndicatorContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.timeIndicatorContainer{
+    color: white;
+}
+.timeText{
+    position: absolute;
+    z-index: 1;
+}
+.timeIndicator{
+    height: 200px;
+    width: 200px;
+    rotate: -90deg;
+}
+
+.indicatorTrack,
+.indicatorIndication {
+    cx: 100px;
+    cy: 100px;
+    r: 80px;
+    fill: transparent;
+    stroke-width: 10px;
+}
+
+.indicatorTrack{
+    stroke: #003f75;
+}
+
+.indicatorIndication{
+    stroke: #3556f8;
+    stroke-dasharray: 502.65px;
+}
+.timerControlIconsContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 200px;
+    z-index: 1;
+}
+.timerControlIconButton{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+
+}
+.timerControlIcon{
+    width: 25px;
+    height: 30px;
+}
+
+.sessionsIndicator{
+    margin: 10px 0px 10px 0px;
+}
+.timeSettingsContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    min-height: 0;
+}
+
+.timerInputContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 0;
+    align-items: center;
+    color: white;
+}
+
+.timerInputContainer > span {
+    margin: 10px 0px 10px 0;
+}
+
+@media screen and (max-height: 724px){
+    .timerInputContainer {
+        flex: 1;
+        justify-content: flex-start;
+        min-height: 50%;
+    }
+    @media screen and (max-width: 747px){
+        .timerInputContainer {
+            width: 50%;
+        }
+    }
+    @media screen and (max-width: 620px){
+        .timerInputContainer > p {
+            height: 42px;
+        }
+    }
+}
+@media screen and (max-height: 518px){
+    .pomodoroTimer{
+        justify-content: flex-start;
+    }
+    .timerInputContainer{
+        width: calc(50% - 100px);
+    }
+    .numberInput{
+        width: 100%;
+    }
+    .timeSettingsContainer{
+        position: absolute;
+        top: 75px;
+        flex-basis: 50%;
+
+    }
+    .workDurationInputContainer{
+        margin-right: 100px;
+    }
+    .breakDurationInputContainer{
+        margin-right: 100px;
+    }
+    .longBreakDurationInputContainer{
+        margin-left: 100px;
+    }
+    .longBreakIntervalInputContainer{
+        margin-left: 100px;
+    }
+}
+
+@media screen and (max-width: 620px){
+    .pomodoroTimer{
+        left: 0%;
+        width: 100%;
+    }
+}
+
+.numberInputContainer{
+    display: flex;
+    justify-content: center;
+    height: 50px;
+}
+.numberInput{
+    text-align: center;
+    width: 100%;
+}
+
+.resetTimerMessage{
+    color: #ff9595;    
+}
+
+
+@media screen and (max-width: 1150px){
+   .pomodoroTimer.right{
+    width: 50%;
+    left: 50%;
+   }
+
+}

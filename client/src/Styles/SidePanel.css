@@ -1,0 +1,136 @@
+.goalsSidePanel{
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  width: 50%;
+  left: 0%;
+  height: 100vh;
+  transition: rigth 0.5s ease, width 0.5s ease;
+  overflow: auto;
+  background-color: #1c3144;
+  color: white;
+}
+
+div > .goalSelected{
+  background-color: #3f5364;
+}
+
+@media screen and (max-width: 1150px){
+  div > .goalsSidePanel.left {
+    width: 50%;
+  }
+
+}
+@media screen and (max-width: 620px){
+  div > .goalsSidePanel{
+    width: 100%;
+  }
+  
+}
+  
+.goalsSidePanel.left {
+  width: 33.333vw;
+  right: 66.667%
+}
+
+
+/* Styling for the form when editing the goal title */
+.edit-form {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+/* Styling for the input field when editing the goal title */
+.edit-input {
+  padding: 5px;
+  width: 200px;
+}
+
+/* Styling for the delete button */
+.delete-button {
+  padding: 5px 10px;
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Styling for the goal title when not in edit mode */
+.goalTitle {
+  box-sizing: border-box;
+  cursor: pointer;
+  min-height: 50px;
+  border-radius: 5px;
+  margin: 5px;
+  background-color: #1c3144;
+  color: white;
+}
+.goalTitleContainer{
+  display: flex;
+  align-items: center;
+  max-width: 100%
+}
+
+.leftArrowButton{
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.editButton{
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.editTitleButton{
+  background-color: transparent;
+  vertical-align: middle;
+  border-radius: 5px;
+  width: 40px;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.sidePanelTitleEditForm{
+  display: flex;
+  margin: 5px;
+}
+
+.sidePanelTitleEditForm > input{
+  box-sizing: border-box;
+  height: 50px;
+  background-color: transparent;
+  color: white;
+}
+.sidePanelDeleteButton{
+  width: 40px;
+  background-color: transparent;
+  border: none;
+}
+
+.sidePanelEditDoneButton{
+  width: 40px;
+  background-color: transparent;
+  border: none;
+}
+
+.sidePanelNewGoalForm > input{
+  height: 40px;
+  box-sizing: border-box;
+}
+.sidePanelNewGoalForm > button{
+  height: 40px;
+  width: 40px;
+  vertical-align: middle;
+  background-color: transparent;
+  border: none;
+}

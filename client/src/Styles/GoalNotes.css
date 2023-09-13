@@ -1,0 +1,16 @@
+.goalNotes{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.goalNotes > button{
+    background-color: #3f5364;
+    color: white;
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 15px;
+}

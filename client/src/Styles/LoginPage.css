@@ -1,0 +1,67 @@
+.loginContainer{
+    display: flex;
+    flex-direction: column;
+    margin-top: 15vh;
+    text-align: center;
+    color: white;
+}
+
+.loginContainer > a {
+    color: white;
+}
+.loginContainer > div> span{
+    margin: 0px 20px 0 20px;
+}
+
+.loginContainer > div{
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 10px 0;
+
+}
+
+.loginContainer > div > div{
+    align-self: center;
+    width: 90px;
+    height: 2px;
+    background-color: gray;
+
+}
+
+.loginForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.loginInput{
+    height: 30px;
+    margin: 5px 0px 5px 0px;
+    max-width: 250px;
+    width: 250px;
+}
+.showPasswordButton{
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    top: 50%;
+    right: 7px;
+    transform: translateY(-50%);
+}
+.submitButton {
+    height: 25px;
+    max-width: 250px;
+    width: 100%;
+    margin-top: 10px;
+    cursor: pointer;
+    color: white;
+    background-color: #3f5364;
+}
+.loginForm > span{
+    color: #ff9595;
+}
+
+.inputContainer{
+    position: relative;
+    max-width: 258px;
+    width: 259px;
+}
