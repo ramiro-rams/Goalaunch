@@ -55,7 +55,7 @@ if (process.env.NODE_ENV === 'production') {
   }
 app.use(cors({origin: corsOrigin, credentials: true}))
 
-app.get('/checkAuth', checkAuthenticated, (req, res)=>{
+app.get('/api/checkAuth', checkAuthenticated, (req, res)=>{
     res.sendStatus(200)
 })
 
