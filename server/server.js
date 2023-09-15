@@ -49,7 +49,7 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 let corsOrigin = ''
 if (process.env.NODE_ENV === 'production') {
-    corsOrigin = 'https://goalaunch.com';
+    corsOrigin = 'http://13.52.102.2';
   } else {
     corsOrigin = 'http://localhost:3000';
   }
@@ -59,7 +59,7 @@ app.get('/checkAuth', checkAuthenticated, (req, res)=>{
     res.sendStatus(200)
 })
 
-app.post('/login', checkNotAuthenticated, (req, res, next) => {
+app.post('/api/login', checkNotAuthenticated, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       if (err) {
         return res.status(500).json({ message: 'Internal Server Error' });
@@ -77,11 +77,8 @@ app.post('/login', checkNotAuthenticated, (req, res, next) => {
       });
     })(req, res, next);
   }); 
-app.get('/register', (req, res) => {
-    res.render('register.ejs')
-})
 
-app.post('/register', checkNotAuthenticated, async (req, res) => {
+app.post('/api/register', checkNotAuthenticated, async (req, res) => {
     const username = req.body.username
     const password = req.body.password
     function isUsernameValid(username){
@@ -142,39 +139,25 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
     }
 })
 
-app.get('/adminData', (req, res) =>{
+app.get('/api/adminData', (req, res) =>{
     res.send('admin data')
 })
 
-app.get('/userID', checkAuthenticated, (req, res) => {
+app.get('/api/userID', checkAuthenticated, (req, res) => {
     res.send(req.user._id)
 })
 
-app.get('/getDates', checkAuthenticated, async(req, res)=>{
+app.get('/api/getDates', checkAuthenticated, async(req, res)=>{
     const dates = await client.db('myDB').collection('goals').findOne({goalName: 'Testing'});
     res.send(dates.dateAchievementStatuses[1].fullDate);
 })
 
-app.get('/test/:date', async(req, res)=>{
-    let date = new Date();
-    date.setDate(req.params.date);
-    const response = await client.db('myDB').collection('goals').updateOne({goalName: "Testing"}, {
-        $push: {
-            dateAchievementStatuses: {
-                $each: [{fullDate: date, status: 'checked'}],
-                $sort: {fullDate: 1}
-            }
-        }
-    })
-    res.send(response);
-})
-
-app.get('/goalData', checkAuthenticated, async (req, res)=>{
+app.get('/api/goalData', checkAuthenticated, async (req, res)=>{
     const data = await client.db('myDB').collection('goals').find({userID: req.user._id}).toArray();
     res.send(data)
 })
 
-app.post('/insertGoal', checkAuthenticated, async (req, res)=>{
+app.post('/api/insertGoal', checkAuthenticated, async (req, res)=>{
     const newGoal = req.body.newGoal
     if(newGoal.length > 0){
         const response = await client
@@ -189,7 +172,7 @@ app.post('/insertGoal', checkAuthenticated, async (req, res)=>{
     }
 })
 
-app.post('/editGoal', checkAuthenticated, async (req, res)=>{
+app.post('/api/editGoal', checkAuthenticated, async (req, res)=>{
     const goalName = req.body.goalName
     const _id = req.body._id
     if(goalName.length > 0){
@@ -201,7 +184,7 @@ app.post('/editGoal', checkAuthenticated, async (req, res)=>{
     }
 })
 
-app.post('/deleteGoal', checkAuthenticated, async(req, res)=>{
+app.post('/api/deleteGoal', checkAuthenticated, async(req, res)=>{
     const _id = req.body._id
     await client
         .db(myDB)
@@ -210,19 +193,19 @@ app.post('/deleteGoal', checkAuthenticated, async(req, res)=>{
     res.send()
 })
 
-app.post('/incrementProgress', checkAuthenticated, async(req, res)=>{
+app.post('/api/incrementProgress', checkAuthenticated, async(req, res)=>{
     const _id = req.body._id
     await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, {$inc: {progressPoints: 1}})
     res.send()
 })
 
-app.post('/decrementProgress', checkAuthenticated, async(req, res)=>{
+app.post('/api/decrementProgress', checkAuthenticated, async(req, res)=>{
     const _id = req.body._id
     await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, {$inc: {progressPoints: -1}})
     res.send()
 })
 
-app.post('/checkDateStatus', checkAuthenticated, async (req, res) => {
+app.post('/api/checkDateStatus', checkAuthenticated, async (req, res) => {
     const _id = req.body._id
     const date = new Date(req.body.date)
     await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, {$push:{
@@ -233,7 +216,7 @@ app.post('/checkDateStatus', checkAuthenticated, async (req, res) => {
     }})
     res.sendStatus(200)
 })
-app.post('/crossDateStatus', checkAuthenticated, async (req, res) => {
+app.post('/api/crossDateStatus', checkAuthenticated, async (req, res) => {
     const _id = req.body._id
     const date = new Date(req.body.date)
     await client.db(myDB)
@@ -242,7 +225,7 @@ app.post('/crossDateStatus', checkAuthenticated, async (req, res) => {
                            {$set:{"dateAchievementStatuses.$.status": 'crossed'}})
     res.send()
 })
-app.post('/clearDateStatus', checkAuthenticated, async (req, res) => {
+app.post('/api/clearDateStatus', checkAuthenticated, async (req, res) => {
     const _id = req.body._id
     const date = new Date(req.body.date);
     await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, {$pull:{
@@ -251,28 +234,28 @@ app.post('/clearDateStatus', checkAuthenticated, async (req, res) => {
     res.send()
 })
 
-app.post('/insertStartTime', checkAuthenticated, async (req, res) =>{
+app.post('/api/insertStartTime', checkAuthenticated, async (req, res) =>{
     const _id = req.body._id
     const date = req.body.startTime
     await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, { $set: {startTime: date}})
     res.send()
 })
 
-app.post('/insertEndTime', checkAuthenticated, async (req, res) =>{
+app.post('/api/insertEndTime', checkAuthenticated, async (req, res) =>{
     const _id = req.body._id
     const date = req.body.endTime
     await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, { $set: {endTime: date}})
     res.send()
 })
 
-app.post('/setNotes', checkAuthenticated, async(req, res) => {
+app.post('/api/setNotes', checkAuthenticated, async(req, res) => {
     const _id = req.body._id
     const notes = req.body.notes
     const response = await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, { $set: {notes: notes}})
     res.send()
 })
 
-app.delete('/logout', (req, res) => {
+app.delete('/api/logout', (req, res) => {
     req.logOut((err) => {
         if(err){
             res.sendStatus(500).json({message: 'Error logging out'})
