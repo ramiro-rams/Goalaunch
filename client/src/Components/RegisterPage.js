@@ -89,7 +89,7 @@ export default function RegisterPage(){
                         {confirmedPassword.length > 0 ? <button type='button' tabIndex='-1' onClick={()=>setPasswordIsHidden(prev => !prev)}>{passwordIsHidden ? 'Show' : 'Hide'}</button> : ''}
                     </div>
                     <div className='passwordRequirements'>
-                        <span>Password requirements: 0/3</span>
+                        <span>Password requirements:</span>
                         <ul>
                             <li>At least 8 characters long</li>
                             <li>Meets 3 of the following requirements:</li>

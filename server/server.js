@@ -297,5 +297,4 @@ function checkNotAuthenticated(req, res, next) {
         next()
     }
 }
-
 const server = app.listen(app.listen(PORT, () => console.log(`Goalaunch app listening on port ${PORT}`)))
