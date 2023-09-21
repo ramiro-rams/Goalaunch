@@ -1,13 +1,11 @@
 require('dotenv').config()
 const express = require("express")
 const cors = require("cors")
-const { MongoClient, ObjectId} = require("mongodb")
+const {MongoClient, ObjectId} = require("mongodb")
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 const initializePassport = require('./passport-config')
-const flash = require('express-flash')
 const session = require('express-session')
-const methodOverride = require('method-override')
 const client = new MongoClient(process.env.CONNECTION_STRING)
 const myDB = "myDB"
 const PORT = 8080
@@ -46,7 +44,6 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(methodOverride('_method'))
 let corsOrigin = ''
 if (process.env.NODE_ENV === 'production') {
     corsOrigin = 'http://13.52.102.2';

@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import axios from 'axios'
 import {BrowserRouter } from 'react-router-dom'
 
-const baseURL = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8080'
+const baseURL = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8080/api'
 axios.defaults.baseURL = baseURL
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
