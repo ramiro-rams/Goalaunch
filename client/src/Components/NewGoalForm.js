@@ -10,7 +10,7 @@ export default function NewGoalForm({goalsArray, setGoalsArray}){
       if(newGoal.length > 0){
         var res 
         try{
-          res = await axios.post('/insertGoal', {newGoal: newGoal}, {withCredentials: true})
+          res = await axios.post('/goals/insertGoal', {newGoal: newGoal}, {withCredentials: true})
         }catch{
           navigate('/login')
         }

@@ -1,7 +1,7 @@
 import GoalsSidePanel from "./GoalsSidePanel"
 import DetailedGoalView from "./DetailedGoalView"
 import PomodoroTimer from "./PomodoroTimer"
-import LogoutButton from "./LogoutButton"
+import TopNavBar from "./TopNavBar/TopNavBar"
 import { useEffect, useState } from "react"
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
@@ -50,7 +50,7 @@ export default function UserGoalsPage(){
     window.addEventListener('resize', handleResize)
     const fetch = async()=>{
       try{
-        const response = await axios.get('/goalData', {withCredentials:true})
+        const response = await axios.get('/goals/goalData', {withCredentials:true})
         setGoalsArray(response.data)
       }catch(err){
         navigate('/login')
@@ -63,26 +63,28 @@ export default function UserGoalsPage(){
   }, [])
   return(
     <div>
-      {!(windowWidth <= 620 && goalSelectedIndex > -1) && <LogoutButton/>}
-      {(windowWidth > 1150 || goalSelectedIndex === -1) && (windowWidth > 620 || panelSelected === 'goals')  && <GoalsSidePanel
-                      goalsArray={goalsArray}
-                      setGoalsArray={setGoalsArray}
-                      setGoalSelectedIndex={setGoalSelectedIndex}
-                      goalSelectedIndex={goalSelectedIndex}
-                      panelSelected={panelSelected}
-                      setPanelSelected={setPanelSelected}
-                      windowWidth={windowWidth}
-      />}
-      {goalSelectedIndex > -1 && goalsArray.length > 0 ? (
-        <DetailedGoalView 
-                          goalsArray={goalsArray}
-                          goalIndex={goalSelectedIndex}
-                          setGoalsArray={setGoalsArray}
-                          setGoalSelectedIndex={setGoalSelectedIndex}
-        />
-      ):<></>}
-      {(windowWidth > 620 || panelSelected === 'timer') && <PomodoroTimer panelSelected={panelSelected} setPanelSelected={setPanelSelected}/>
-      }
+      <TopNavBar/>
+      <div className="userGoalsPage">
+        {(windowWidth > 1150 || goalSelectedIndex === -1) && (windowWidth > 620 || panelSelected === 'goals')  && <GoalsSidePanel
+                        goalsArray={goalsArray}
+                        setGoalsArray={setGoalsArray}
+                        setGoalSelectedIndex={setGoalSelectedIndex}
+                        goalSelectedIndex={goalSelectedIndex}
+                        panelSelected={panelSelected}
+                        setPanelSelected={setPanelSelected}
+                        windowWidth={windowWidth}
+        />}
+        {goalSelectedIndex > -1 && goalsArray.length > 0 ? (
+          <DetailedGoalView 
+                            goalsArray={goalsArray}
+                            goalIndex={goalSelectedIndex}
+                            setGoalsArray={setGoalsArray}
+                            setGoalSelectedIndex={setGoalSelectedIndex}
+          />
+        ):<></>}
+        {(windowWidth > 620 || panelSelected === 'timer') && <PomodoroTimer panelSelected={panelSelected} setPanelSelected={setPanelSelected}/>
+        }
+      </div>
     </div>
   )
 }

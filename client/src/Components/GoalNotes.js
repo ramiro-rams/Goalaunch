@@ -13,7 +13,7 @@ export default function GoalNotes({goalsArray, setGoalsArray, goalIndex}){
     };
     const handleSubmit = async () => {
         try{
-            await axios.post('/setNotes', {_id: goalsArray[goalIndex]._id, notes: value}, {withCredentials: true})
+            await axios.post('/goals/setNotes', {_id: goalsArray[goalIndex]._id, notes: value}, {withCredentials: true})
         }
         catch(err){
             navigate('/login')

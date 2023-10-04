@@ -42,7 +42,7 @@ export default function RegisterPage(){
               // Numbers
               if (/\d/.test(password)) 
                 charTypes++
-              // Special symbols (you can customize this character class)
+              // Special symbols
               if (/[\W_]/.test(password)) {
                 charTypes++
               }
@@ -52,7 +52,7 @@ export default function RegisterPage(){
             if(password === confirmedPassword){
                 if(isPasswordValid(password)){
                     try{
-                        const response = await axios.post('/register', {
+                        const response = await axios.post('/auth/register', {
                             username: username,
                             password: password
                         })

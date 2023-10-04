@@ -1,3 +1,6 @@
 body{
     background-color: #1c3144;
 }
+.userGoalsPage{
+    height: calc(100vh - 50px)
+}

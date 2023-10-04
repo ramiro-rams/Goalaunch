@@ -69,7 +69,7 @@ export default function DetailedGoalView({goalsArray, goalIndex, setGoalsArray, 
       })
       if(checked){
         try{
-          await axios.post('/checkDateStatus', {
+          await axios.post('/goals/checkDateStatus', {
             _id: goalsArray[goalIndex]._id,
             date: value
           }, {withCredentials: true})
@@ -79,7 +79,7 @@ export default function DetailedGoalView({goalsArray, goalIndex, setGoalsArray, 
       }
       else if(crossed){
         try{
-          await axios.post('/crossDateStatus', 
+          await axios.post('/goals/crossDateStatus', 
             {
               _id: goalsArray[goalIndex]._id,
               date: value
@@ -93,7 +93,7 @@ export default function DetailedGoalView({goalsArray, goalIndex, setGoalsArray, 
       }
       else {
         try{
-          await axios.post('/clearDateStatus', {
+          await axios.post('/goals/clearDateStatus', {
             _id: goalsArray[goalIndex]._id,
             date: value
           }, {withCredentials: true})
@@ -143,7 +143,7 @@ export default function DetailedGoalView({goalsArray, goalIndex, setGoalsArray, 
         const newArray = goalsArray.filter((obj, i) => goalIndex !== i)
         setGoalsArray(newArray)
         try{
-          await axios.post('deleteGoal', {
+          await axios.post('/goals/deleteGoal', {
             _id: goalsArray[goalIndex]._id
           }, {withCredentials: true})
         }catch(err){
@@ -174,7 +174,7 @@ export default function DetailedGoalView({goalsArray, goalIndex, setGoalsArray, 
       setEditingTitle(false)
       if(initialTitle !== title && title){
         try{
-          await axios.post('/editGoal', {_id: goalsArray[goalIndex]._id, goalName: title}, {withCredentials: true})
+          await axios.post('/goals/editGoal', {_id: goalsArray[goalIndex]._id, goalName: title}, {withCredentials: true})
         }catch(e){
           navigate('/login')
         }

@@ -7,11 +7,12 @@
   position: absolute;
   width: 50%;
   left: 0%;
-  height: 100vh;
+  height: inherit;
   transition: rigth 0.5s ease, width 0.5s ease;
   overflow: auto;
   background-color: #1c3144;
   color: white;
+  z-index: 1;
 }
 
 div > .goalSelected{
@@ -36,34 +37,13 @@ div > .goalSelected{
   right: 66.667%
 }
 
-
-/* Styling for the form when editing the goal title */
-.edit-form {
-  display: inline-block;
-  margin-right: 10px;
-}
-
-/* Styling for the input field when editing the goal title */
-.edit-input {
-  padding: 5px;
-  width: 200px;
-}
-
-/* Styling for the delete button */
-.delete-button {
-  padding: 5px 10px;
-  background-color: #f44336;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-/* Styling for the goal title when not in edit mode */
 .goalTitle {
   box-sizing: border-box;
   cursor: pointer;
   min-height: 50px;
   border-radius: 5px;
+  border-color: white;
+  border-style:solid;
   margin: 5px;
   background-color: #1c3144;
   color: white;
@@ -74,60 +54,15 @@ div > .goalSelected{
   max-width: 100%
 }
 
-.leftArrowButton{
-  width: 40px;
-  height: 40px;
-  background-color: transparent;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.editButton{
-  width: 40px;
-  height: 40px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-.editTitleButton{
-  background-color: transparent;
-  vertical-align: middle;
-  border-radius: 5px;
-  width: 40px;
-  height: 50px;
-  border: none;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.sidePanelTitleEditForm{
-  display: flex;
-  margin: 5px;
-}
-
-.sidePanelTitleEditForm > input{
-  box-sizing: border-box;
-  height: 50px;
-  background-color: transparent;
-  color: white;
-}
-.sidePanelDeleteButton{
-  width: 40px;
-  background-color: transparent;
-  border: none;
-}
-
-.sidePanelEditDoneButton{
-  width: 40px;
-  background-color: transparent;
-  border: none;
-}
-
 .sidePanelNewGoalForm > input{
   height: 40px;
   box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 .sidePanelNewGoalForm > button{
+  position: absolute;
   height: 40px;
   width: 40px;
   vertical-align: middle;

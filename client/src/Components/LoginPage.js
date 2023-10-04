@@ -14,7 +14,7 @@ export default function LoginPage(){
 
     const checkAuthentication = async () => {
         try{
-            const res = await axios.get('/checkAuth', {withCredentials: true})
+            const res = await axios.get('/auth/checkAuth', {withCredentials: true})
             if(res.status === 200){
                 navigate('/goals')
             }
@@ -26,7 +26,7 @@ export default function LoginPage(){
     const handleSubmit = async (e) => {
         e.preventDefault()
         try{
-            const response = await axios.post('/login', {
+            const response = await axios.post('/auth/login', {
                 username: username,
                 password: password
             },{withCredentials: true})

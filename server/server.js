@@ -1,23 +1,14 @@
 require('dotenv').config()
 const express = require("express")
 const cors = require("cors")
-const {MongoClient, ObjectId} = require("mongodb")
-const bcrypt = require('bcrypt')
+const {ObjectId} = require("mongodb")
 const passport = require('passport')
 const initializePassport = require('./passport-config')
 const session = require('express-session')
-const client = new MongoClient(process.env.CONNECTION_STRING)
-const myDB = "myDB"
+const goalsRoutes = require('./routes/goalsRoutes')
+const authRoutes = require('./routes/authRoutes')
+const {client, connectToDatabase} = require('./databaseSetup')
 const PORT = 8080
-
-const connectToDatabase = async () => {
-    try{
-        await client.connect()
-        console.log(`Connected to the ${myDB} database`)
-    } catch (err){
-        console.error(`Error connecting to the database: ${err}`)
-    }
-}
 
 connectToDatabase()
 
@@ -30,9 +21,7 @@ initializePassport(
     async (id) => {
         const response = await client.db('myDB').collection('users').findOne({_id: new ObjectId(id)})
         return response}
-
 )
-
 
 const app = express()
 app.use(express.json())
@@ -51,216 +40,8 @@ if (process.env.NODE_ENV === 'production') {
     corsOrigin = 'http://localhost:3000';
   }
 app.use(cors({origin: corsOrigin, credentials: true}))
-
-app.get('/api/checkAuth', checkAuthenticated, (req, res)=>{
-    res.sendStatus(200)
-})
-
-app.post('/api/login', checkNotAuthenticated, (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-      if (err) {
-        return res.status(500).json({ message: 'Internal Server Error' });
-      }
-      
-      if (!user) {
-        return res.status(401).json({ message: 'Authentication failed' });
-      }
-  
-      req.logIn(user, (err) => {
-        if (err) {
-          return res.status(500).json({ message: 'Internal Server Error' });
-        }
-        return res.status(200).json({ message: 'Authentication successful' });
-      });
-    })(req, res, next);
-  }); 
-
-app.post('/api/register', checkNotAuthenticated, async (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
-    function isUsernameValid(username){
-        const validCharacters = /^[a-z0-9.]+$/
-        const maxUsernameLength = 30
-        if(username.length <= maxUsernameLength && username.length > 0 && validCharacters.test(username))
-            return true
-        else
-            return false
-    }
-    function isPasswordValid(password) {
-        if (password.length < 8) {
-          return false;
-        }
-        // Check for at least three of the following character types
-        let charTypes = 0
-        // Uppercase letters
-        if (/[A-Z]/.test(password)) {
-          charTypes++
-        }
-        // Lowercase letters
-        if (/[a-z]/.test(password)) {
-          charTypes++
-        }
-        // Numbers
-        if (/\d/.test(password)) {
-          charTypes++
-        }
-        // Special symbols (you can customize this character class)
-        if (/[\W_]/.test(password)) {
-          charTypes++
-        }
-        return charTypes >= 3;
-      }
-    if(isUsernameValid(username)){
-        const response = await client.db('myDB').collection('users').findOne({username: username})
-        if(!response){
-            if(isPasswordValid(password)){
-                try{
-                    const hashedPassword = await bcrypt.hash(password, 10)
-                    const response = await client.db(myDB).collection('users').insertOne({username: username, password: hashedPassword})
-                    res.status(201).json({message: 'Registration successful'})
-                }catch{
-                    res.status(500).json({error: 'Internal server error'})
-                }
-            }
-            else{
-                res.status(400).json({error: 'InvalidPassword', message: "The password must be at least 8 characters long and contain at least three of the following character types: uppercase letters, lowercase letters, numbers, and special symbols."})
-            }
-            
-        }
-        else{
-            res.status(409).json({error: 'UsernameTaken', message: "Username is already taken"})
-        }
-    }
-    else{
-        res.status(400).json({error: 'InvalidUsername', message: 'The username must be between 1 and 30 characters long and can contain lowercase letters, digits, and periods'})
-    }
-})
-
-app.get('/api/adminData', (req, res) =>{
-    res.send('admin data')
-})
-
-app.get('/api/userID', checkAuthenticated, (req, res) => {
-    res.send(req.user._id)
-})
-
-app.get('/api/getDates', checkAuthenticated, async(req, res)=>{
-    const dates = await client.db('myDB').collection('goals').findOne({goalName: 'Testing'});
-    res.send(dates.dateAchievementStatuses[1].fullDate);
-})
-
-app.get('/api/goalData', checkAuthenticated, async (req, res)=>{
-    const data = await client.db('myDB').collection('goals').find({userID: req.user._id}).toArray();
-    res.send(data)
-})
-
-app.post('/api/insertGoal', checkAuthenticated, async (req, res)=>{
-    const newGoal = req.body.newGoal
-    if(newGoal.length > 0){
-        const response = await client
-            .db(myDB)
-            .collection('goals')
-            .insertOne({goalName: newGoal,
-                        userID: req.user._id,
-                        dateAchievementStatuses: [],
-                        notes: ""
-                    })
-        res.send(response)
-    }
-})
-
-app.post('/api/editGoal', checkAuthenticated, async (req, res)=>{
-    const goalName = req.body.goalName
-    const _id = req.body._id
-    if(goalName.length > 0){
-        await client
-            .db(myDB)
-            .collection('goals')
-            .updateOne({_id: new ObjectId(_id)}, {$set: {goalName: goalName}})
-        res.send()
-    }
-})
-
-app.post('/api/deleteGoal', checkAuthenticated, async(req, res)=>{
-    const _id = req.body._id
-    await client
-        .db(myDB)
-        .collection('goals')
-        .deleteOne({_id: new ObjectId(_id)})
-    res.send()
-})
-
-app.post('/api/incrementProgress', checkAuthenticated, async(req, res)=>{
-    const _id = req.body._id
-    await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, {$inc: {progressPoints: 1}})
-    res.send()
-})
-
-app.post('/api/decrementProgress', checkAuthenticated, async(req, res)=>{
-    const _id = req.body._id
-    await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, {$inc: {progressPoints: -1}})
-    res.send()
-})
-
-app.post('/api/checkDateStatus', checkAuthenticated, async (req, res) => {
-    const _id = req.body._id
-    const date = new Date(req.body.date)
-    await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, {$push:{
-        dateAchievementStatuses: {
-            $each: [{fullDate: date, status: 'checked'}],
-            $sort: {fullDate: 1}
-        }
-    }})
-    res.sendStatus(200)
-})
-app.post('/api/crossDateStatus', checkAuthenticated, async (req, res) => {
-    const _id = req.body._id
-    const date = new Date(req.body.date)
-    await client.db(myDB)
-                .collection('goals')
-                .updateOne({_id: new ObjectId(_id), "dateAchievementStatuses.fullDate": date}, 
-                           {$set:{"dateAchievementStatuses.$.status": 'crossed'}})
-    res.send()
-})
-app.post('/api/clearDateStatus', checkAuthenticated, async (req, res) => {
-    const _id = req.body._id
-    const date = new Date(req.body.date);
-    await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, {$pull:{
-        dateAchievementStatuses: { fullDate: date}
-    }})
-    res.send()
-})
-
-app.post('/api/insertStartTime', checkAuthenticated, async (req, res) =>{
-    const _id = req.body._id
-    const date = req.body.startTime
-    await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, { $set: {startTime: date}})
-    res.send()
-})
-
-app.post('/api/insertEndTime', checkAuthenticated, async (req, res) =>{
-    const _id = req.body._id
-    const date = req.body.endTime
-    await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, { $set: {endTime: date}})
-    res.send()
-})
-
-app.post('/api/setNotes', checkAuthenticated, async(req, res) => {
-    const _id = req.body._id
-    const notes = req.body.notes
-    const response = await client.db(myDB).collection('goals').updateOne({_id: new ObjectId(_id)}, { $set: {notes: notes}})
-    res.send()
-})
-
-app.delete('/api/logout', (req, res) => {
-    req.logOut((err) => {
-        if(err){
-            res.sendStatus(500).json({message: 'Error logging out'})
-        }
-        else{
-            res.sendStatus(200)
-    }})
-})
+app.use('/api/auth', authRoutes)
+app.use('/api/goals', goalsRoutes)
 
 function shutdown (e){
     console.info(`${e} signal received.`)
@@ -277,21 +58,5 @@ function shutdown (e){
 process.on('SIGTERM', (e) => shutdown(e))
 process.on('SIGINT', (e) => shutdown(e))
 process.on('unhandledRejection', (e)=>shutdown(e))
-function checkAuthenticated(req, res, next) {
-    if(req.isAuthenticated()){
-        next()
-    }
-    else{
-        res.status(401).json({message: "Not authenticated. Log in to perform action"})
-    }
-}
 
-function checkNotAuthenticated(req, res, next) {
-    if(req.isAuthenticated()){
-        res.status(401).json({message: "Already logged in. Log out to perform action."})
-    }
-    else{
-        next()
-    }
-}
 const server = app.listen(app.listen(PORT, () => console.log(`Goalaunch app listening on port ${PORT}`)))

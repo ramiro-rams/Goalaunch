@@ -1,0 +1,49 @@
+.topNavBar{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 50px;
+}
+
+.topNavBar > h1{
+    font-size: 30px;
+    margin: 10px 0px 5px 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.hamburgerMenu > div{
+    background-color: white;
+    position: absolute;
+    width: 150px;
+    z-index: 1;
+    right: 0%;
+    border: 3px white solid;
+    border-radius: 5px;
+}
+
+.hamburgerMenu > div > button{
+    width: 100%;
+    background-color: #1c3144;
+    color: white;
+    font-size: 15px;
+    height: 35px;
+    border-width: 1px 0px 1px 0px;
+    border-color: white;
+    border-style: solid;
+}
+
+.hamburgerMenu > div > button:hover{
+    background-color: #3f5364;
+}
+
+.hamburgerMenu > button{
+    background-color: transparent;
+    padding: 0px;
+    border: none;
+    cursor: pointer;
+}
+.hamburgerMenu > button > img{
+    height: 40px;
+}
+

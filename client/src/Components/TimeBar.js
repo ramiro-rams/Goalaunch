@@ -13,7 +13,7 @@ const TimeBar = ({barData, setGoalsArray}) => {
       return newGoalsArray
     })
     try{
-      await axios.post('/insertStartTime', {
+      await axios.post('/goals/insertStartTime', {
         _id: barData.goalId,
         startTime: startTime
       }, {withCredentials: true});
@@ -30,7 +30,7 @@ const TimeBar = ({barData, setGoalsArray}) => {
       return newGoalsArray
     })
     try{
-      await axios.post('/insertEndTime', {
+      await axios.post('/goals/insertEndTime', {
         _id: barData.goalId,
         endTime: endTime
       }, {withCredentials: true});

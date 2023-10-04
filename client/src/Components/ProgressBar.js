@@ -13,7 +13,7 @@ export default function ProgressBar ({barData, setGoalsArray}) {
           return newArray
         })
         try{
-          await axios.post('/incrementProgress', {_id: barData.goalId}, {withCredentials: true})
+          await axios.post('/goals/incrementProgress', {_id: barData.goalId}, {withCredentials: true})
         } catch{
           navigate('/login')
         }
@@ -30,7 +30,7 @@ export default function ProgressBar ({barData, setGoalsArray}) {
           return newArray
         })
         try{
-          await axios.post('/decrementProgress', {_id: barData.goalId}, {withCredentials: true})
+          await axios.post('/goals/decrementProgress', {_id: barData.goalId}, {withCredentials: true})
         } catch{
           navigate('/login')
         }
