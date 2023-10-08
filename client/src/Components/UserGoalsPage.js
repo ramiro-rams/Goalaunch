@@ -4,19 +4,13 @@ import PomodoroTimer from "./PomodoroTimer"
 import TopNavBar from "./TopNavBar/TopNavBar"
 import { useEffect, useState } from "react"
 import axios from 'axios'
-import {useNavigate} from 'react-router-dom'
 
 export default function UserGoalsPage(){
   const [goalsArray, setGoalsArray] = useState([])
   const [goalSelectedIndex, setGoalSelectedIndex] = useState(-1)
   const [panelSelected, setPanelSelected] = useState('goals') // either 'goals', 'timer' or null
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  const navigate = useNavigate()
-  const initialDate = new Date()
-  const deadLine = new Date()
-  initialDate.setDate(1)
-  deadLine.setDate(22)
-
+  const [authenticated, setAuthenticated] = useState(false)
   useEffect(()=>{
     let goalsPanel = document.querySelector('.goalsSidePanel')
     let pomodoroTimer = document.querySelector('.pomodoroTimer')
@@ -32,6 +26,7 @@ export default function UserGoalsPage(){
     }
     
   },[windowWidth, goalSelectedIndex])
+
   function handleResize(){
     setWindowWidth(window.innerWidth)
     const detailedGoalView = document.querySelector('.detailedGoalView')
@@ -48,12 +43,17 @@ export default function UserGoalsPage(){
 
   useEffect(()=>{
     window.addEventListener('resize', handleResize)
+    const storedGoals = JSON.parse(localStorage.getItem('goals'));
+    if(storedGoals){
+      setGoalsArray(storedGoals)
+    }
     const fetch = async()=>{
       try{
         const response = await axios.get('/goals/goalData', {withCredentials:true})
         setGoalsArray(response.data)
+        setAuthenticated(true)
       }catch(err){
-        navigate('/login')
+        setAuthenticated(false)
       }
     }
     fetch()
@@ -61,9 +61,16 @@ export default function UserGoalsPage(){
       window.removeEventListener('resize', handleResize)
     }
   }, [])
+
+  useEffect(()=>{
+    if(goalsArray.length > 0){
+      localStorage.setItem('goals', JSON.stringify(goalsArray))
+    }
+  },[goalsArray])
+
   return(
     <div>
-      <TopNavBar/>
+      <TopNavBar authenticated={authenticated} setAuthenticated={setAuthenticated}/>
       <div className="userGoalsPage">
         {(windowWidth > 1150 || goalSelectedIndex === -1) && (windowWidth > 620 || panelSelected === 'goals')  && <GoalsSidePanel
                         goalsArray={goalsArray}
@@ -73,6 +80,7 @@ export default function UserGoalsPage(){
                         panelSelected={panelSelected}
                         setPanelSelected={setPanelSelected}
                         windowWidth={windowWidth}
+                        authenticated={authenticated}
         />}
         {goalSelectedIndex > -1 && goalsArray.length > 0 ? (
           <DetailedGoalView 
@@ -80,6 +88,7 @@ export default function UserGoalsPage(){
                             goalIndex={goalSelectedIndex}
                             setGoalsArray={setGoalsArray}
                             setGoalSelectedIndex={setGoalSelectedIndex}
+                            authenticated={authenticated}
           />
         ):<></>}
         {(windowWidth > 620 || panelSelected === 'timer') && <PomodoroTimer panelSelected={panelSelected} setPanelSelected={setPanelSelected}/>

@@ -1,4 +1,4 @@
-const {MongoClient, ObjectId} = require("mongodb")
+const {MongoClient} = require("mongodb")
 const client = new MongoClient(process.env.CONNECTION_STRING)
 const myDB = "myDB"
 

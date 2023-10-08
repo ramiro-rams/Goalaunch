@@ -2,21 +2,24 @@ import axios from 'axios'
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function NewGoalForm({goalsArray, setGoalsArray}){
+export default function NewGoalForm({goalsArray, setGoalsArray, authenticated}){
     const [newGoal, setNewGoal] = useState('')
-    const navigate = useNavigate()
     async function handleSubmit(event){
       event.preventDefault()
       if(newGoal.length > 0){
-        var res 
-        try{
-          res = await axios.post('/goals/insertGoal', {newGoal: newGoal}, {withCredentials: true})
-        }catch{
-          navigate('/login')
+        var userId
+        if(authenticated){
+          try{
+            let res = await axios.post('/goals/insertGoal', {newGoal: newGoal}, {withCredentials: true})
+            userId = res.data.insertedId
+          }catch{
+          }
         }
-        const startTime = new Date().toISOString()
-        const endTime = new Date().toISOString()
-        const newArray = [...goalsArray, {_id: res.data.insertedId, goalName: newGoal, progressPoints: 0, progressPointsCap: 100, dateAchievementStatuses: [], startTime: startTime, endTime: endTime}]
+        else{
+          userId = null
+        }
+        const newArray = [...goalsArray, {_id: userId, goalName: newGoal, dateAchievementStatuses: [], notes: ''}]
+        console.log(userId)
         setGoalsArray(newArray);
         setNewGoal('')
       }

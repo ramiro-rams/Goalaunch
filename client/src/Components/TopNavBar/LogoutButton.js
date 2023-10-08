@@ -1,13 +1,12 @@
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
-export default function LogoutButton(){
-    const navigate = useNavigate()
+export default function LogoutButton({setAuthenticated, setMenuToggle}){
     const handleLogout = async () => {
         const confirmed = window.confirm("Are you sure you want to log out?")
         if(confirmed){
             try{
                 await axios.delete('/auth/logout', {withCredentials: true})
-                navigate('/login')
+                setAuthenticated(false)
+                setMenuToggle(false)
             }
             catch(e){
                 console.error(e)
@@ -15,6 +14,6 @@ export default function LogoutButton(){
         }
     }
     return(
-        <button onClick={handleLogout} className="logoutButton">Logout</button>
+        <button className="hamburgerMenuPanelButton" onClick={handleLogout}>Logout</button>
     )
 }
