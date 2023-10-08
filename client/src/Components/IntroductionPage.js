@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function IndroductionPage(){
     return (
         <div className="introduction-container">
@@ -11,7 +13,9 @@ export default function IndroductionPage(){
           </ul>
           <p>So, whether you're working on a big project, trying to build new habits, or simply looking to make the most of your day, Goalaunch is here to support you every step of the way.</p>
           <p>Ready to boost your productivity and achieve your dreams? Let's get started!</p>
-          <span><a href="/register">Register</a>-or-<a href="/login">Login</a></span>
+          <Link to="/goals">
+            <button>Get Started</button>
+          </Link>
         </div>
       );
     };

@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-export default function GoalNotes({goalsArray, setGoalsArray, goalIndex}){
+export default function GoalNotes({goalsArray, setGoalsArray, goalIndex, authenticated}){
     let value = ""
-    const navigate = useNavigate()
     if(goalsArray){
         value = goalsArray[goalIndex].notes
     }
@@ -12,11 +11,12 @@ export default function GoalNotes({goalsArray, setGoalsArray, goalIndex}){
         setGoalsArray(newGoalsArray)
     };
     const handleSubmit = async () => {
-        try{
-            await axios.post('/goals/setNotes', {_id: goalsArray[goalIndex]._id, notes: value}, {withCredentials: true})
-        }
-        catch(err){
-            navigate('/login')
+        if(authenticated){
+            try{
+                await axios.post('/goals/setNotes', {_id: goalsArray[goalIndex]._id, notes: value}, {withCredentials: true})
+            }
+            catch(err){
+            }
         }
     }
     return (

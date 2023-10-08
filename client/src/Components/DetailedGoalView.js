@@ -1,17 +1,15 @@
 import {useState, useEffect, useRef} from 'react'
 import axios from 'axios'
-import {useNavigate} from 'react-router-dom'
 import Calendar from "react-calendar";
 import GoalNotes from './GoalNotes';
 
-export default function DetailedGoalView({goalsArray, goalIndex, setGoalsArray, setGoalSelectedIndex}) {
+export default function DetailedGoalView({goalsArray, goalIndex, setGoalsArray, setGoalSelectedIndex, authenticated}) {
   const title = goalsArray[goalIndex].goalName
     const [initialTitle, setInitialTitle] = useState(goalsArray[goalIndex].goalName)
-    const [tabSelected, setTabSelected] = useState('Calendar'); //edither 'Calendar' or 'Notes'
+    const [tabSelected, setTabSelected] = useState('Calendar'); //either 'Calendar' or 'Notes'
     const [value, setValue] = useState(new Date())
     const [editingTitle, setEditingTitle] = useState(false)
     const titleFormRef = useRef(null)
-    const navigate = useNavigate()
     let statusesArray = []
     statusesArray = goalsArray[goalIndex].dateAchievementStatuses
     useEffect(() => {
@@ -45,7 +43,7 @@ export default function DetailedGoalView({goalsArray, goalIndex, setGoalsArray, 
       return {status: isInArray, index: index}
     }
     const handleChange = async (value) => {
-      var checked, crossed= false;
+      var checked, crossed = false;
       const dateInArray = dateIsInArray(statusesArray, value)
       const newStatusesArray = [...statusesArray]
       if(dateInArray.status === true){
@@ -67,41 +65,40 @@ export default function DetailedGoalView({goalsArray, goalIndex, setGoalsArray, 
         newGoalsArr[goalIndex].dateAchievementStatuses = newStatusesArray
         return newGoalsArr
       })
-      if(checked){
-        try{
-          await axios.post('/goals/checkDateStatus', {
-            _id: goalsArray[goalIndex]._id,
-            date: value
-          }, {withCredentials: true})
-        }catch(err){
-          navigate('/login')
-        }
-      }
-      else if(crossed){
-        try{
-          await axios.post('/goals/crossDateStatus', 
-            {
+      if(authenticated){
+        if(checked){
+          try{
+            await axios.post('/goals/checkDateStatus', {
               _id: goalsArray[goalIndex]._id,
               date: value
-            }, 
-            {
-              withCredentials: true
-            })
-        }catch{
-          navigate('/login')
+            }, {withCredentials: true})
+          }catch(err){
+          }
         }
-      }
-      else {
-        try{
-          await axios.post('/goals/clearDateStatus', {
-            _id: goalsArray[goalIndex]._id,
-            date: value
-          }, {withCredentials: true})
-        }catch{
-          navigate('/login')
+        else if(crossed){
+          try{
+            await axios.post('/goals/crossDateStatus', 
+              {
+                _id: goalsArray[goalIndex]._id,
+                date: value
+              }, 
+              {
+                withCredentials: true
+              })
+          }catch{
+          }
         }
+        else {
+          try{
+            await axios.post('/goals/clearDateStatus', {
+              _id: goalsArray[goalIndex]._id,
+              date: value
+            }, {withCredentials: true})
+          }catch{
+          }
+        }
+        
       }
-      
       setValue(value)
     }
   
@@ -147,7 +144,6 @@ export default function DetailedGoalView({goalsArray, goalIndex, setGoalsArray, 
             _id: goalsArray[goalIndex]._id
           }, {withCredentials: true})
         }catch(err){
-          navigate('/login')
         }
       }
     }
@@ -176,7 +172,6 @@ export default function DetailedGoalView({goalsArray, goalIndex, setGoalsArray, 
         try{
           await axios.post('/goals/editGoal', {_id: goalsArray[goalIndex]._id, goalName: title}, {withCredentials: true})
         }catch(e){
-          navigate('/login')
         }
         setInitialTitle(title)
       }

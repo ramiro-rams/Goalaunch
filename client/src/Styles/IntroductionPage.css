@@ -19,6 +19,18 @@
 .introduction-container > span > a{
     color: white;
 }
+.introduction-container > a{
+    display: flex;
+    justify-content: center;
+}
+.introduction-container > a > button{
+    color: white;
+    height: 50px;
+    width: 150px;
+    font-size: 17px;
+    background-color: #1c3144;
+    border-radius: 5px;
+}
 
 .wikipediaLink{
     color: white;

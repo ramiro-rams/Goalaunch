@@ -1,10 +1,13 @@
 import {useState, useRef, useEffect} from 'react'
 import LogoutButton from './LogoutButton'
 import HomeButton from './HomeButton'
-export default function HamburgerMenu(){
+import LogInButton from './LogInButton'
+import RegisterButton from './RegisterButton'
+export default function HamburgerMenu({authenticated, setAuthenticated}){
     const [menuToggle, setMenuToggle] = useState(false)
     const menuPanel = useRef(null)
     const menu = useRef(null)
+   
     useEffect(()=>{
         const handleClickOutsideMenuPanel = (event) => {
             if(menuPanel.current && !menu.current.contains(event.target)){
@@ -25,8 +28,14 @@ export default function HamburgerMenu(){
             {menuToggle ? 
             <div ref={menuPanel}>
                 <HomeButton/>
-                <LogoutButton/>
-
+                {authenticated ? 
+                    <LogoutButton setAuthenticated={setAuthenticated} setMenuToggle={setMenuToggle}/> :(
+                        <>
+                            <LogInButton/>
+                            <RegisterButton/>
+                        </>
+                    )
+                }   
             </div> : ''}
         </div>
     )
