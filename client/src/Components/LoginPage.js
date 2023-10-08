@@ -33,11 +33,13 @@ export default function LoginPage(){
             if(response.status === 200){
                 //this stores all the goals the user created while loged out in the database
                 const goalsArray = JSON.parse(localStorage.getItem('goals'))
-                const unsavedGoals = goalsArray.filter((goal) => goal._id === null)
-                for(const goal of unsavedGoals){
-                    try{
-                        await axios.post('/goals/insertGoal', {newGoal: goal.goalName}, {withCredentials: true})
-                    }catch{
+                if(goalsArray){
+                    const unsavedGoals = goalsArray.filter((goal) => goal._id === null)
+                    for(const goal of unsavedGoals){
+                        try{
+                            await axios.post('/goals/insertGoal', {newGoal: goal.goalName}, {withCredentials: true})
+                        }catch{
+                        }
                     }
                 }
                 navigate('/goals')

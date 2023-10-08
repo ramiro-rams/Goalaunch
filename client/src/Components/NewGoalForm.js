@@ -19,7 +19,6 @@ export default function NewGoalForm({goalsArray, setGoalsArray, authenticated}){
           userId = null
         }
         const newArray = [...goalsArray, {_id: userId, goalName: newGoal, dateAchievementStatuses: [], notes: ''}]
-        console.log(userId)
         setGoalsArray(newArray);
         setNewGoal('')
       }
