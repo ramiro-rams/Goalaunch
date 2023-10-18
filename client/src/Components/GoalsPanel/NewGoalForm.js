@@ -1,6 +1,5 @@
 import axios from 'axios'
 import {useState} from 'react'
-import { useNavigate } from 'react-router-dom'
 
 export default function NewGoalForm({goalsArray, setGoalsArray, authenticated}){
     const [newGoal, setNewGoal] = useState('')
